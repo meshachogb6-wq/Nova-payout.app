@@ -4,7 +4,8 @@
 // NovaPayout config (edit anytime)
 window.NOVAPAYOUT_CONFIG = {
   supabaseUrl: "https://jsinvatwqyjkqhkvtqiz.supabase.co",
-  supabaseAnonKey: "PASTE_YOUR_SUPABASE_ANON_KEY_HERE",
+  supabaseAnonKey: "  
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzaW52YXR3cXlqa3Foa3Z0cWl6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMwMjk4MTMsImV4cCI6MjA5ODYwNTgxM30.RTEL3-To1xHhC5GVnSPFZq3qDIY5GPtInFrhRescIBo",
 
   adminEmail: "meshachsopuru300@gmail.com",
 
