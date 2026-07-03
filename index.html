@@ -1,0 +1,280 @@
+
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Paynova</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="app">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logoMark">N</div>
+        <div>
+          <div class="brandName">Paynova</div>
+          <div class="brandTag">Earn • Upgrade • Withdraw</div>
+        </div>
+      </div>
+      <div class="topActions">
+        <button id="btnLogout" class="btn ghost hidden">Logout</button>
+      </div>
+    </div>
+
+    <main class="shell">
+      <!-- AUTH -->
+      <section id="screenAuth" class="screen">
+        <div class="card authCard">
+          <h1>Welcome to Paynova</h1>
+          <p class="muted">Create an account, verify your email with OTP, then start mining.</p>
+
+          <div class="tabs">
+            <button id="tabLogin" class="tab active">Login</button>
+            <button id="tabSignup" class="tab">Sign up</button>
+          </div>
+
+          <form id="formLogin" class="form">
+            <label>Email</label>
+            <input id="loginEmail" type="email" placeholder="you@email.com" required />
+            <label>Password</label>
+            <input id="loginPassword" type="password" placeholder="••••••••" required />
+            <button class="btn primary" type="submit">Login</button>
+            <button id="btnForgot" class="btn link" type="button">Forgot password?</button>
+          </form>
+
+          <form id="formSignup" class="form hidden">
+            <label>Full name</label>
+            <input id="signupName" type="text" placeholder="Your full name" required />
+            <label>Email</label>
+            <input id="signupEmail" type="email" placeholder="you@email.com" required />
+            <label>Password</label>
+            <input id="signupPassword" type="password" placeholder="Create a strong password" minlength="6" required />
+            <label>Referral code (optional)</label>
+            <input id="signupRef" type="text" placeholder="e.g. MSH-8K2P" />
+            <button class="btn primary" type="submit">Create account</button>
+            <p class="tiny muted">You’ll receive a 6‑digit OTP code by email (valid for 10 minutes).</p>
+          </form>
+
+          <form id="formOtp" class="form hidden">
+            <div class="pill">Email verification</div>
+            <p class="muted">Enter the 6‑digit OTP sent to <span id="otpEmailLabel" class="mono"></span>.</p>
+            <label>OTP code</label>
+            <input id="otpCode" inputmode="numeric" maxlength="6" placeholder="123456" required />
+            <button class="btn primary" type="submit">Verify & Continue</button>
+            <button id="btnResendOtp" class="btn ghost" type="button">Resend OTP</button>
+          </form>
+
+          <div class="divider"></div>
+          <p class="tiny muted">
+            By continuing, you agree to Paynova’s security checks and verification steps.
+          </p>
+        </div>
+      </section>
+
+      <!-- DASHBOARD -->
+      <section id="screenDash" class="screen hidden">
+        <div class="grid">
+          <div class="card">
+            <div class="row between">
+              <div>
+                <div class="muted tiny">Welcome</div>
+                <div id="dashName" class="h2">—</div>
+              </div>
+              <div class="badge" id="dashLevel">Bronze</div>
+            </div>
+
+            <div class="stats">
+              <div class="stat">
+                <div class="muted tiny">Balance</div>
+                <div id="dashBalance" class="h1">₦0</div>
+              </div>
+              <div class="stat">
+                <div class="muted tiny">Today withdrawn</div>
+                <div id="dashWithdrawnToday" class="h3">₦0</div>
+              </div>
+              <div class="stat">
+                <div class="muted tiny">Daily limit</div>
+                <div id="dashDailyLimit" class="h3">₦175,000</div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="row gap">
+              <button id="btnMine" class="btn primary">Start Mining (5 mins)</button>
+              <button id="btnWithdraw" class="btn">Withdraw</button>
+              <button id="btnUpgrade" class="btn">Upgrade</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="row between">
+              <div>
+                <div class="muted tiny">Your referral link</div>
+                <div class="mono" id="refLink">—</div>
+              </div>
+              <button id="btnCopyRef" class="btn ghost">Copy</button>
+            </div>
+            <p class="tiny muted">Earn ₦5,000 for each verified signup using your referral link.</p>
+          </div>
+
+          <div class="card">
+            <div class="row between">
+              <div class="h3">Tasks</div>
+              <div class="muted tiny">External providers</div>
+            </div>
+            <div class="taskList">
+              <button class="task" data-task="surveys">Take Surveys</button>
+              <button class="task" data-task="videos">Watch Videos</button>
+              <button class="task" data-task="books">Read Books</button>
+              <button class="task" data-task="offers">Offerwall</button>
+            </div>
+            <p class="tiny muted">Providers can be connected later. Mining works immediately.</p>
+          </div>
+
+          <div class="card">
+            <div class="row between">
+              <div class="h3">Notifications</div>
+              <button id="btnClearNotifs" class="btn ghost">Clear</button>
+            </div>
+            <div id="notifList" class="notifList"></div>
+          </div>
+        </div>
+
+        <div class="bottomNav">
+          <button class="navBtn active" data-nav="home">Home</button>
+          <button class="navBtn" data-nav="tasks">Tasks</button>
+          <button class="navBtn" data-nav="alerts">Alerts</button>
+          <button class="navBtn" data-nav="admin" id="navAdmin">Admin</button>
+        </div>
+      </section>
+
+      <!-- WITHDRAW -->
+      <section id="screenWithdraw" class="screen hidden">
+        <div class="card">
+          <div class="row between">
+            <div class="h2">Withdraw</div>
+            <button id="btnBackDash1" class="btn ghost">Back</button>
+          </div>
+          <p class="muted">Fill your bank details and amount. Then pay ₦10,000 for your Withdrawal ID and upload receipt for approval.</p>
+
+          <form id="formWithdraw" class="form">
+            <label>Account name</label>
+            <input id="wAcctName" type="text" required />
+            <label>Account number</label>
+            <input id="wAcctNumber" type="text" inputmode="numeric" minlength="10" maxlength="10" required />
+            <label>Bank name</label>
+            <input id="wBankName" type="text" required />
+            <label>Amount to withdraw (₦)</label>
+            <input id="wAmount" type="number" min="1000" step="500" required />
+
+            <div class="payBox">
+              <div class="h3">Pay ₦10,000 for Withdrawal ID</div>
+              <div class="mono">
+                Account Number: <b>0044193121</b><br/>
+                Account Name: <b>Nwoba Chinasa Anna</b><br/>
+                Bank: <b>GTBank</b>
+              </div>
+              <p class="tiny muted">After payment, upload your receipt. Admin will approve/reject. If approved, your Withdrawal ID will be emailed to you (valid for 10 minutes).</p>
+            </div>
+
+            <label>Upload payment receipt (JPG/PNG/PDF)</label>
+            <input id="wReceipt" type="file" accept="image/*,application/pdf" required />
+
+            <button class="btn primary" type="submit">Submit for Approval</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- UPGRADE -->
+      <section id="screenUpgrade" class="screen hidden">
+        <div class="card">
+          <div class="row between">
+            <div class="h2">Upgrade</div>
+            <button id="btnBackDash2" class="btn ghost">Back</button>
+          </div>
+
+          <p class="muted">Choose a level. Payment is handled manually for now. After payment, upload receipt for admin approval.</p>
+
+          <div class="levels">
+            <button class="level" data-level="Bronze">
+              <div class="h3">Bronze</div>
+              <div class="muted tiny">₦13,000 • Daily limit ₦175,000</div>
+            </button>
+            <button class="level" data-level="Silver">
+              <div class="h3">Silver</div>
+              <div class="muted tiny">₦15,550 • Daily limit ₦290,000</div>
+            </button>
+            <button class="level" data-level="Gold">
+              <div class="h3">Gold</div>
+              <div class="muted tiny">₦17,500 • Daily limit ₦400,000</div>
+            </button>
+            <button class="level" data-level="Platinum">
+              <div class="h3">Platinum</div>
+              <div class="muted tiny">₦25,000 • Daily limit Unlimited</div>
+            </button>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="payBox">
+            <div class="h3">Pay to upgrade</div>
+            <div class="mono">
+              Account Number: <b>0044193121</b><br/>
+              Account Name: <b>Nwoba Chinasa Anna</b><br/>
+              Bank: <b>GTBank</b>
+            </div>
+          </div>
+
+          <form id="formUpgrade" class="form">
+            <input id="uLevel" type="hidden" />
+            <label>Upload upgrade receipt (JPG/PNG/PDF)</label>
+            <input id="uReceipt" type="file" accept="image/*,application/pdf" required />
+            <button class="btn primary" type="submit">Submit Upgrade Receipt</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ADMIN -->
+      <section id="screenAdmin" class="screen hidden">
+        <div class="card">
+          <div class="row between">
+            <div class="h2">Admin Panel</div>
+            <button id="btnBackDash3" class="btn ghost">Back</button>
+          </div>
+          <p class="muted">Approve/reject receipts, suspend/unsuspend accounts.</p>
+
+          <div class="adminGrid">
+            <div class="card inner">
+              <div class="h3">Pending Withdrawal ID Receipts</div>
+              <div id="adminWithdrawals" class="adminList"></div>
+            </div>
+
+            <div class="card inner">
+              <div class="h3">Pending Upgrade Receipts</div>
+              <div id="adminUpgrades" class="adminList"></div>
+            </div>
+
+            <div class="card inner">
+              <div class="h3">Users</div>
+              <div id="adminUsers" class="adminList"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="toastHost" class="toastHost"></div>
+    <div id="socialProof" class="socialProof hidden"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
+```
+
